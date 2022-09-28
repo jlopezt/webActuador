@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <TITLE>Domoticae</TITLE>    
+        <link rel="stylesheet" type="text/css" href="/static/css.css">
+        <script type="text/javascript">
+        function inicializa(){
+            console.log("Vamos...");
+
+            var xhMaqEstados = new XMLHttpRequest();
+            xhMaqEstados.onreadystatechange = function(){
+                if (xhMaqEstados.readyState == 4){
+                    if(xhMaqEstados.status == 200) {
+                        console.log("JSON: " +xhMaqEstados.responseText);
+                        var res = JSON.parse(xhMaqEstados.responseText);
+
+                        var numeroEntradas=res.numeroEntradas;
+                        var numeroSalidas=res.numeroSalidas;
+
+                        //estado
+                        document.getElementById("estado").innerHTML=res.estado;
+
+                        //entradas
+                        var entradas=res.entradas;
+                        console.log("numero entradas: " + entradas.length);
+
+                        document.getElementById("cabecera_columna_entradas").setAttribute("colspan",entradas.length); 
+                        entradas.forEach(function(entrada,indice,array) {
+                            var hilera = document.getElementById("entrada_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "entrada_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_entradas").appendChild(hilera);
+					
+                                var celda = document.createElement("td");
+								celda.setAttribute("id","entrada_id_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","entrada_nombre_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","entrada_estado_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("entrada_id_" + indice).innerHTML=entrada.id + ":" + entrada.entradaGlobal;
+							document.getElementById("entrada_nombre_" + indice).innerHTML=entrada.nombre;
+							document.getElementById("entrada_estado_" + indice).innerHTML=entrada.estado;
+
+                            celda=document.createElement("th")
+                            celda.setAttribute("id","cabecera_entrada_" + indice)
+                            celda.setAttribute("align","center")
+                            document.getElementById("fila_nombres_entradas").appendChild(celda);
+                            document.getElementById("cabecera_entrada_" + indice).innerHTML=entrada.nombre;
+                        });
+
+                        //salidas
+                        var salidas=res.salidas;
+                        console.log("numero salidas: " + salidas.length);
+
+                        salidas.forEach(function(salida,indice,array) {
+                            var hilera = document.getElementById("salida_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "salida_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_salidas").appendChild(hilera);
+					
+                                var celda = document.createElement("td");
+								celda.setAttribute("id","salida_id_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","salida_nombre_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","salida_estado_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("salida_id_" + indice).innerHTML=salida.id + ":" + salida.salidaGlobal;
+							document.getElementById("salida_nombre_" + indice).innerHTML=salida.nombre;
+							document.getElementById("salida_estado_" + indice).innerHTML=salida.estado;
+                        });
+
+                        //transiciones
+                        var transiciones=res.transiciones;
+                        console.log("numero transiciones: " + transiciones.length);
+
+                        transiciones.forEach(function(transicion,indice,array) {
+                            var hilera = document.getElementById("transicion_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "transicion_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_transiciones").appendChild(hilera);
+					
+                                var celda = document.createElement("td");
+								celda.setAttribute("id","transicion_estadoInicial_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+                                
+                                for(var i=0;i<numeroEntradas;i++){
+								celda = document.createElement("td");
+								celda.setAttribute("id","transicion_entrada_" + i + "_" + indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+                                }
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","transicion_estadoFinal_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("transicion_estadoInicial_" + indice).innerHTML=transicion.inicial;
+							document.getElementById("transicion_estadoFinal_" + indice).innerHTML=transicion.final;
+                            for(var i=0;i<numeroEntradas;i++){
+							    document.getElementById("transicion_entrada_" + i + "_" + indice).innerHTML=transicion.entradas[i];
+                            }
+                        });                        
+                    }
+                }
+            };
+            xhMaqEstados.open("GET", "http://{{ IPDISPOSITIVO }}/estadoMaquinaEstados", true);
+            xhMaqEstados.send(null);
+           /*
+            var xhTransiciones = new XMLHttpRequest();
+            xhTransiciones.onreadystatechange = function(){
+                if (xhTransiciones.readyState == 4){
+                    if(xhTransiciones.status == 200) {
+                        console.log("JSON: " +xhTransiciones.responseText);
+                        var res = JSON.parse(xhTransiciones.responseText);
+
+                        var numeroEntradas=res.numeroEntradas;
+
+                        //transiciones
+                        var transiciones=res.transiciones;
+                        console.log("numero transiciones: " + transiciones.length);
+
+                        transiciones.forEach(function(transicion,indice,array) {
+                            var hilera = document.getElementById("transicion_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "transicion_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_transiciones").appendChild(hilera);
+					
+                                var celda = document.createElement("td");
+								celda.setAttribute("id","transicion_estadoInicial_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+                                
+                                for(var i=0;i<numeroEntradas;i++){
+								celda = document.createElement("td");
+								celda.setAttribute("id","transicion_entrada_" + i + "_" + indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+                                }
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","transicion_estadoFinal_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("transicion_estadoInicial_" + indice).innerHTML=transicion.inicial;
+							document.getElementById("transicion_estadoFinal_" + indice).innerHTML=transicion.final;
+                            for(var i=0;i<numeroEntradas;i++){
+							    document.getElementById("transicion_entrada_" + i + "_" + indice).innerHTML=transicion.entradas[i];
+                            }
+                        });
+                    }
+                }
+            };
+            xhTransiciones.open("GET", "http://{{ IPDISPOSITIVO }}/transicionesMaquinaEstados", true);
+            xhTransiciones.send(null);
+            */
+        };       
+    </script>
+  </head>
+
+  <BODY onload="inicializa()">
+    <div style="float: left">
+        <p style="color:black;">
+            <TABLE id="tabla_estadoActual" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_estadoActual">Estado actual</caption>
+                <tbody id="body_tabla_estadoActual">
+                    <tr>
+                        <TH style="text-align: center;" width="50%">Estado</TD>
+                        <TD class="modo2" id="estado" style="text-align: center;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>
+            <br>
+            <TABLE id="tabla_entradas" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_entradas">Entradas</caption>
+                <tbody id="body_tabla_entradas">
+                    <tr>
+                        <TH>ID</TH>
+                        <TH>Nombre</TH>
+                        <TH>Último estado leido</TH>
+                    </tr>
+                    <!--Una row por particion-->
+                </tbody>
+            </TABLE>            
+            <br>
+            <TABLE id="tabla_salidas" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_salidas">Salidas</caption>
+                <tbody id="body_tabla_salidas">
+                    <tr>
+                        <TH>ID</TH>
+                        <TH>Nombre</TH>
+                        <TH>Estado actual</TH>
+                    </tr>
+                    <!--Una row por particion-->
+                </tbody>
+            </TABLE>            
+            <br>
+            <TABLE id="tabla_transiciones" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_transiciones">Transiciones</caption>
+                <tbody id="body_tabla_transiciones">
+                    <TR>
+                        <TH ROWSPAN=2>Estado inicial</TH><!--rowspan fijo-->
+                        <TH id="cabecera_columna_entradas" COLSPAN=4>Entradas</TH><!--colspan igual al numero de entradas-->
+                        <TH ROWSPAN=2>Estado final</TH><!--rowspan fijo-->
+                    </TR>
+                    <tr id="fila_nombres_entradas">
+                        <!--encabezamiento de las entradas-->
+                    </tr>
+                    <!--Una row por transicion-->
+                </tbody>
+            </TABLE>      
+            <br>      
+    </body>
+</html>

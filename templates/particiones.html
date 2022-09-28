@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <TITLE>Domoticae</TITLE>    
+    <link rel="stylesheet" type="text/css" href="/static/css.css">
+    <script type="text/javascript">
+        function inicializa(nombreFichero){
+            console.log("Vamos...");
+           
+            var xhparticiones = new XMLHttpRequest();
+            xhparticiones.onreadystatechange = function(){
+                if (xhparticiones.readyState == 4){
+                    if(xhparticiones.status == 200) {
+                        console.log("JSON: " +xhparticiones.responseText);
+                        var res = JSON.parse(xhparticiones.responseText);
+
+                        var particiones=res.particiones;
+                        console.log("numero particiones: " + particiones.length);
+
+                        particiones.forEach(function(particion,indice,array) {
+                            var hilera = document.getElementById("particion_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "particion_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_particiones").appendChild(hilera);
+					
+								var celda = document.createElement("td");
+								celda.setAttribute("id","particion_nombre_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","particion_tipo_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","particion_subtipo_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","particion_direccion_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","particion_tamano_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","particion_encriptado_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("particion_nombre_" + indice).innerHTML='<input type="button" id="botonNombre_"' + indice + '" value="' + particion.nombre + '" onclick="cambiaParticionArranque(\'' + particion.nombre + '\')">';
+							document.getElementById("particion_tipo_" + indice).innerHTML=particion.tipo;
+							document.getElementById("particion_subtipo_" + indice).innerHTML=particion.subtipo;
+							document.getElementById("particion_direccion_" + indice).innerHTML=particion.direccion;
+							document.getElementById("particion_tamano_" + indice).innerHTML=particion.tamano;
+							document.getElementById("particion_encriptado_" + indice).innerHTML=particion.encriptado;
+                        });
+
+                        document.getElementById("particionEjecucion").innerHTML= res.particionEjecucion;
+                        document.getElementById("particionProximoArranque").innerHTML= res.particionProximoArranque;
+                        document.getElementById("particionProximoUpdate").innerHTML= res.particionProximoUpdate;
+                    }
+                }
+            };
+            xhparticiones.open("GET", "http://{{ IPDISPOSITIVO }}/particiones", true);
+            xhparticiones.send(null);
+        };      
+
+        function cambiaParticionArranque(nombre){
+          console.log('Cambiamos la particion de arranque a ' + nombre)
+          
+          var xhCambia = new XMLHttpRequest();
+          xhCambia.onreadystatechange = function(){
+              if (xhCambia.readyState == 4){
+                  if(xhCambia.status != 200) {
+                    alert('Error al cambiar la particion: ' + xhCambia.responseText);
+                  }
+                  else console.log("Cambiada particion a " + nombre);
+                  location.href = "particiones";
+                }
+            };
+          xhCambia.open("POST", "http://{{ IPDISPOSITIVO }}/setNextBoot?p=" + nombre, true);
+          xhCambia.send(null);          
+        };    
+    </script>
+  </head>
+
+  <BODY onload="inicializa()">
+    <div style="float: left">
+        <TABLE id="tabla_particiones" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+            <caption id="caption_particioens">Particiones de memoria</caption>
+            <tbody id="body_tabla_particiones">
+                <tr>
+                    <TH>Nombre</TH>
+                    <TH>Tipo</TH>
+                    <TH>Subtipo</TH>
+                    <TH>Direccion</TH>
+                    <TH>Tamaño</TH>
+                    <TH>Encriptado</TH>
+                </tr>
+                <!--Una row por particion-->
+            </tbody>
+        </TABLE>
+        <BR>
+
+        <TABLE id="tabla_estadoActual" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+            <caption id="caption_particioens">Estado</caption>
+            <tbody id="body_tabla_particiones">
+                <tr class="modo2">
+                    <td id="particionEjecucionLabel" style="text-align: left;">Particion en ejecución</td>
+                    <td id="particionEjecucion" style="text-align: center;"></td>
+                </tr>
+                <tr class="modo2">
+                    <td id="particionProximoArranqueLabel" style="text-align: left;">Particion del próximo arranque</td>
+                    <td id="particionProximoArranque" style="text-align: center;"></td>
+                </tr>
+                <tr class="modo2">
+                    <td id="particionProximoUpdateLabel" style="text-align: left;">Particion del próximo update</td>
+                    <td id="particionProximoUpdate" style="text-align: center;"></td>
+                </tr>
+            </tbody>
+        </TABLE>                
+         
+        <BR>
+        <form action="restart"><input type="submit" value="Reiniciar"></form>                
+    </div>
+
+    <div id="atras" class="oculto">
+        <iframe id="iframe_result" name="iframe_result" style="height:80%;width:10%;border:none;"></iframe>
+    </div>    
+  </BODY>
+</HTML>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<TITLE>Domoticae</TITLE>
+		<link rel="stylesheet" type="text/css" href="/static/css.css">
+		<script type="text/javascript">
+			function inicializa(){
+				console.log("Vamos...");
+				var xhSensores = new XMLHttpRequest();
+                xhSensores.onreadystatechange = function(){
+					if (xhSensores.readyState == 4){
+						if(xhSensores.status == 200) {
+						console.log("JSON: " + xhSensores.responseText)
+						var res = JSON.parse(xhSensores.responseText);
+
+						var sensores=res.sensores;
+						console.log("numero sensores: " + sensores.length);
+
+						sensores.forEach(function(sensor,indice,array) {
+							var hilera = document.getElementById("sensor_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "sensor_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_sensores").appendChild(hilera);
+					
+								var celda = document.createElement("td");
+								celda.setAttribute("id","sensor_id_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+								celda.innerHTML=indice;
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","sensor_nombre_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","sensor_tipo_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","sensor_direccion_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","sensor_pin_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+								}
+
+							//document.getElementById("sensor_id_" + indice).innerHTML=sensor.id;
+							document.getElementById("sensor_nombre_" + indice).innerHTML=sensor.nombre;
+							document.getElementById("sensor_tipo_" + indice).innerHTML=sensor.tipo;
+							if('direccion' in sensor) document.getElementById("sensor_direccion_" + indice).innerHTML=sensor.direccion;
+							if('pin' in sensor) document.getElementById("sensor_pin_" + indice).innerHTML=sensor.pin;
+							});
+						}
+					}
+				};
+				xhSensores.open("GET", "http://{{ IPDISPOSITIVO }}/configSensores", true);
+				xhSensores.send(null);					
+			};
+		</script>
+	</HEAD>
+	<BODY onload="inicializa();">
+		<TABLE id="tabla_sensores" border="0" width="100%" cellpadding="0" cellspacing="0" width="300" class="tabla">
+			<CAPTION>Sensores</CAPTION>
+			<tbody  id="body_tabla_sensores">
+				<TR>
+					<TH>id</TH>
+					<TH>Nombre</TH>
+					<TH>Tipo</TH>
+					<TH>Direccion</TH>
+					<TH>Pin</TH>
+				</TR>
+				<!-- Una linea por cada sensor
+				<TR class="modo2">
+					<TD>3</TD><TD>Celula</TD><TD>1</TD><TD>INPUT</TD><TD>19</TD><TD>1</TD><TD>0</TD><TD>0</TD><TD>-</TD><TD>--</TD>
+				</TR>
+				-->
+			</tbody>
+		</table>
+	</BODY>
+</HTML>

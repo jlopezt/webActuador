@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <TITLE>Domoticae</TITLE>    
+    <link rel="stylesheet" type="text/css" href="/static/css.css">
+    <script type="text/javascript">
+        var fichero=''
+
+        function directorio(nombreFichero){
+          var arrayDir=nombreFichero.split('/');
+          var dir="";
+          for (var i=0; i < arrayDir.length-1; i++) {
+            console.log("paso " + i + " | valor: " + arrayDir[i]);
+            if(arrayDir[i]!="") dir = dir + "/" + arrayDir[i];
+            console.log("Valor de dir: " + dir)
+          }
+          return dir
+        }
+
+        function nombre(nombreFichero){
+          var arrayDir=nombreFichero.split('/');
+          return arrayDir[arrayDir.length-1];
+        }
+
+        function inicializa(nombreFichero){
+            console.log("Vamos...");
+
+            const queryString = window.location.search;
+            console.log(queryString);
+            
+            const urlParams = new URLSearchParams(queryString);
+            var nombreFichero="";
+            
+            if(urlParams.has("nombre")){
+                nombreFichero = urlParams.get('nombre');
+                fichero=nombreFichero;
+                console.log(nombreFichero);        
+
+                document.getElementById("volver").setAttribute('action', 'ficheros?dir=' + directorio(nombreFichero))
+                document.getElementById("borrarFichero").onclick=function(){window.location.href = "ficheros?dir=" + directorio(fichero);}
+                //document.getElementById("salvarFichero").onclick=function(){window.location.href = "ficheros?dir=" + directorio(fichero);}
+
+                var xhfichero = new XMLHttpRequest();
+                xhfichero.onreadystatechange = function(){
+                    if (xhfichero.readyState == 4){
+                        if(xhfichero.status == 200) {
+                        console.log("fichero: " + xhfichero.responseText)
+                        document.getElementById("nombreFichero").innerHTML="Fichero: " + nombreFichero;
+                        document.getElementById("botonBorra").value=nombreFichero;
+                        document.getElementById("botonSalva").value=nombreFichero;
+                        document.getElementById("botonVuelve").value=directorio(nombreFichero);//nombreFichero;
+                        document.getElementById("texto").innerHTML=xhfichero.responseText;
+                        }
+                    }
+                };
+                xhfichero.open("GET", "http://{{ IPDISPOSITIVO }}/leeFichero?nombre=" + nombreFichero, true);
+                xhfichero.send(null);
+            }					
+        };
+
+        function salvaFichero(fichero){
+          console.log('Salvamos el fichero ' + fichero)
+          
+          var xhSalva = new XMLHttpRequest();
+          xhSalva.onreadystatechange = function(){
+              if (xhSalva.readyState == 4){
+                  if(xhSalva.status != 200) {
+                    alert('Error al salvar el fichero' + xhSalva.responseText);
+                  }
+                  else console.log("fichero: " + fichero + " salvado.");
+                  location.href = "ficheros?dir=" + directorio(fichero);
+                }
+            };
+          xhSalva.open("POST", "http://{{ IPDISPOSITIVO }}/creaFichero?nombre=" + fichero + '&contenido=' + encodeURI(document.getElementById("texto").value), true);
+          xhSalva.send(null);          
+        };        
+
+        function borraFichero(fichero){
+          console.log('Borramos el fichero ' + fichero)
+          var xhBorra = new XMLHttpRequest();
+          xhBorra.onreadystatechange = function(){
+              if (xhBorra.readyState == 4){
+                  if(xhBorra.status != 200) {
+                    alert('Error al borrar el fichero' + xhBorra.responseText);
+                  }
+                  else console.log("fichero: " + fichero + " borrado.");
+                  location.href = "ficheros?dir=" + directorio(fichero);
+                }
+            };
+          xhBorra.open("GET", "http://{{ IPDISPOSITIVO }}/borraFichero?nombre=" + fichero, true);
+          xhBorra.send(null);
+        };
+    </script>
+  </head>
+
+  <BODY onload="inicializa()">
+    <form id="borrarFichero" action="" target="_self" >
+      <input id="botonBorra" type="hidden" name="nombre" value="">
+    </form>
+    
+    <form id="salvarFichero" action="http://{{ IPDISPOSITIVO }}/creaFichero" target="_self">
+      <input id="botonSalva" type="hidden" name="nombre" value="">
+    </form>
+
+    <form id="volver" action="" target="_self">
+      <input id="botonVuelve" type="hidden" name="dir" value="">
+    </form>
+
+    <div id="contenedor" style="width:900px;">      
+        <p id="nombreFichero" align="center" style="margin-top: 0px;font-size: 16px; background-color: #83aec0; background-repeat: repeat-x; color: #FFFFFF; font-family: Trebuchet MS, Arial; text-transform: uppercase;">Fichero:</p>
+        <BR>
+        <table width='100%'><tr>  
+          <td align='left'> <button form="salvarFichero" style="float: left;" type="button" value="" onclick="salvaFichero(fichero)">Salvar</button></td>
+          <td align='left'> <button form="borrarFichero" style="float: right;" type="button" value="" onclick="borraFichero(fichero)">Borrar</button></td>
+          <td align='right'><button form="volver"        style="float: right;" type="submit" value="">Volver</button></td>
+        </tr></table>  
+        <BR><BR>
+        <textarea id="texto" form="salvarFichero2" cols=120 rows=45 name="contenido"></textarea>
+    </div>
+  </BODY>
+</HTML>

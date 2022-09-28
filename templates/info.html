@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <TITLE>Domoticae</TITLE>    
+    <link rel="stylesheet" type="text/css" href="/static/css.css">
+    <script type="text/javascript">
+        function inicializa(nombreFichero){
+            console.log("Vamos...");
+           
+            var xhInfo = new XMLHttpRequest();
+            xhInfo.onreadystatechange = function(){
+                if (xhInfo.readyState == 4){
+                    if(xhInfo.status == 200) {
+                        console.log("JSON: " +xhInfo.responseText);
+                        var res = JSON.parse(xhInfo.responseText);
+
+                        //basica
+                        var basica=res.basica;
+                        document.getElementById("uptime").innerHTML=basica.uptime;
+                        document.getElementById("hora").innerHTML=basica.hora;
+                        document.getElementById("fecha").innerHTML=basica.fecha;
+                        document.getElementById("nivelActivo").innerHTML=basica.nivelActivo;
+
+                        //WiFi
+                        var wifi=res.wifi;
+                        document.getElementById("ssid").innerHTML=wifi.ssid;
+                        document.getElementById("ip").innerHTML=wifi.ip;
+                        document.getElementById("potencia").innerHTML=wifi.potencia;
+                        
+                        //MQTT
+                        var mqtt=res.MQTT;
+                        document.getElementById("ipBroker").innerHTML=mqtt.ipBroker;
+                        document.getElementById("puertoBroker").innerHTML=mqtt.puertoBroker;
+                        document.getElementById("usuario").innerHTML=mqtt.usuario;
+                        document.getElementById("password").innerHTML=mqtt.password;
+                        document.getElementById("topicRoot").innerHTML=mqtt.topicRoot;
+                        
+                        //Hardware
+                        var hardware=res.hardware;
+                        document.getElementById("freeHeap").innerHTML=hardware.FreeHeap;
+                        document.getElementById("chipId").innerHTML=hardware.ChipId;
+                        document.getElementById("versionSdk").innerHTML=hardware.SdkVersion;
+                        document.getElementById("frequenciaCpu").innerHTML=hardware.CpuFreqMHz;
+                        document.getElementById("flashChipSize").innerHTML=hardware.FlashChipSize;
+                        document.getElementById("flashChipSpeed").innerHTML=hardware.FlashChipSpeed;
+
+                        //salidas
+                        var salidas=res.infoSalidas;
+                        console.log("numero salidas: " + salidas.length);
+
+                        salidas.forEach(function(salida,indice,array) {
+                            var hilera = document.getElementById("salida_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "salida_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_salidas").appendChild(hilera);
+					
+                                var celda = document.createElement("td");
+								celda.setAttribute("id","salida_id_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","salida_nombre_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","salida_estado_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+                            }
+
+							document.getElementById("salida_id_" + indice).innerHTML=salida.id;
+							document.getElementById("salida_nombre_" + indice).innerHTML=salida.nombre;
+							document.getElementById("salida_estado_" + indice).innerHTML=salida.estado;
+                        });
+                    }
+                }
+            };
+            xhInfo.open("GET", "http://{{ IPDISPOSITIVO }}/info", true);
+            xhInfo.send(null);
+        };       
+    </script>
+  </head>
+
+  <BODY onload="inicializa()">
+    <div style="float: left">
+        <p style="color:black;">
+            <TABLE id="tabla_infoBasica" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_infoBasica">Info básica</caption>
+                <tbody id="body_tabla_infoBasica">
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Uptime</TD>
+                        <TD id="uptime" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Hora</TD>
+                        <TD id="hora" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Fecha</TD>
+                        <TD id="fecha" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Nivel activo</TD>
+                        <TD id="nivelActivo" style="text-align: right;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>
+            <br>
+            <TABLE id="tabla_salidas" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_salidas">Salidas</caption>
+                <tbody id="body_tabla_salidas">
+                    <tr>
+                        <TH>ID</TH>
+                        <TH>Nombre</TH>
+                        <TH>Estado</TH>
+                    </tr>
+                    <!--Una row por particion-->
+                </tbody>
+            </TABLE>            
+            <br>
+            <TABLE id="tabla_infoWifi" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_infoWifi">Info WiFi</caption>
+                <tbody id="body_tabla_infoWifi">
+                    <tr class="modo2">
+                        <TD style="text-align: left;">SSID</TD>
+                        <TD id="ssid" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">IP</TD>
+                        <TD id="ip" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Potencia</TD>
+                        <TD id="potencia" style="text-align: right;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>                
+            <br>
+            <TABLE id="tabla_infoMQTT" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_infoMQTT">Info MQTT</caption>
+                <tbody id="body_tabla_infoMQTT">
+                    <tr class="modo2">
+                        <TD style="text-align: left;">IP Broker</TD>
+                        <TD id="ipBroker" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Puerto broker</TD>
+                        <TD id="puertoBroker" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Usuario</TD>
+                        <TD id="usuario" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Password</TD>
+                        <TD id="password" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Topic root</TD>
+                        <TD id="topicRoot" style="text-align: right;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>    
+            <br>
+            <TABLE id="tabla_infoHardware" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_infoHardware">Info Hardware</caption>
+                <tbody id="body_tabla_infoHardware">
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Free heap</TD>
+                        <TD id="freeHeap" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Chip ID</TD>
+                        <TD id="chipId" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Version SDK</TD>
+                        <TD id="versionSdk" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Frecuencia CPU (MHz)</TD>
+                        <TD id="frequenciaCpu" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Flash Chip Size</TD>
+                        <TD id="flashChipSize" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Flash Chip Speed</TD>
+                        <TD id="flashChipSpeed" style="text-align: right;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>
+        </p>           
+    </div>
+  </BODY>
+</HTML>    

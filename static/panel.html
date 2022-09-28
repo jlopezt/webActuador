@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Domoticae</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/static/css.css" media="screen" />
+    <link rel='stylesheet' type='text/css' href='/static/main.css'>
+        <script type="text/javascript">
+            const BLOQUES_POR_FILA=3
+
+            function inicializa(){
+                console.log("Vamos...");
+                configuracion='{"Bloques":[{"nombre":"primero", "imagen": "img_camara.jpg","enlace": "http://10.68.1.60"},{"nombre":"segundo", "imagen": "img_garaje.jpg","enlace": "navidad/"},{"nombre":"tercero", "imagen": "img_LuzEscalera.jpg","enlace": "luzescalera/"},{"nombre":"cuarto", "imagen": "img_navidad.jpg","enlace": "camara/index.html"},{"nombre":"quinto", "imagen": "img_camara.jpg","enlace": "https://fotos.lopeztola.com/"},{"nombre":"sexto", "imagen": "img_LuzEscalera.jpg","enlace": "https://eltiempo.lopeztola.com"},{"nombre":"septimo", "imagen": "img_navidad.jpg","enlace": "https://www.marca.es"}]}'
+
+                var paneles = JSON.parse(configuracion);
+                var bloques=paneles.Bloques;
+                console.log("numero bloques: " + bloques.length);
+
+                var bloqueEnFila=BLOQUES_POR_FILA+1;
+                var hilera =null
+
+                bloques.forEach(function(bloque,indice,array) {
+                    if(bloqueEnFila>=BLOQUES_POR_FILA) {
+                        hilera = document.createElement("tr");
+                        hilera.setAttribute("id", "fila_" + indice/BLOQUES_POR_FILA);
+                        hilera.setAttribute("class","modo2");
+                        document.getElementById("body_tabla_bloques").appendChild(hilera);
+
+                        bloqueEnFila=0;
+                    }
+
+                    var celda = document.createElement("td");
+                    celda.setAttribute("id","bloque_"+indice);
+                    celda.setAttribute("align","right");
+                    hilera.appendChild(celda);
+
+                    var imagen = document.createElement("img");
+                    imagen.setAttribute("id","imagen_"+indice);
+                    imagen.setAttribute("alt",bloque.enlace);
+                    imagen.setAttribute("src", bloque.imagen);
+                    imagen.setAttribute("width","320px");
+                    imagen.setAttribute("height","240px");
+                    celda.appendChild(imagen);
+
+                    celda.setAttribute('onclick', "cargaPadre('" + bloque.enlace + "')");
+
+                    bloqueEnFila++;
+                });               
+            };
+
+            function cargaPadre(pagina){
+                window.parent.location.href=pagina;
+            };           
+        </script>
+	</head>
+	<body onload="inicializa()">
+		<table id="tabla_bloques" style="border: 2px solid black">
+			<tbody id="body_tabla_bloques">
+    		</tbody>
+        </table>
+    </body>
+</html>
