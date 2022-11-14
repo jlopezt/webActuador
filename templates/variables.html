@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<TITLE>Domoticae</TITLE>
+		<link rel="stylesheet" type="text/css" href="/static/css.css">
+		<script type="text/javascript">
+			function inicializa(){
+				console.log("Vamos...");
+				ocultaHumbrales();
+
+				var xhVariables = new XMLHttpRequest();
+                xhVariables.onreadystatechange = function(){
+					if (xhVariables.readyState == 4){
+						if(xhVariables.status == 200) {
+						console.log("JSON: " + xhVariables.responseText)
+						var res = JSON.parse(xhVariables.responseText);
+
+						var variables=res.Variables;
+						console.log("numero variables: " + variables.length);
+
+						variables.forEach(function(variable,indice,array) {
+							var hilera = document.getElementById("variable_"+indice);
+							if(hilera==null){
+								console.log("no existe la fila, la creo");
+								var hilera = document.createElement("tr");
+								hilera.setAttribute("id", "variable_" + indice);
+								hilera.setAttribute("class","modo2");
+								document.getElementById("body_tabla_variables").appendChild(hilera);
+					
+								var celda = document.createElement("td");
+								celda.setAttribute("id","variable_id_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+								celda.innerHTML=indice;
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_nombre_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_tipo_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_descripcion_"+indice);
+								celda.setAttribute("align","left");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_valor_"+indice);
+								celda.setAttribute("align","right");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_unidades_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+
+								celda = document.createElement("td");
+								celda.setAttribute("id","variable_humbrales_"+indice);
+								celda.setAttribute("align","center");
+								hilera.appendChild(celda);
+							}
+
+							//document.getElementById("variable_id_" + indice).innerHTML=variable.id;
+							document.getElementById("variable_nombre_" + indice).innerHTML=variable.nombre;
+							document.getElementById("variable_tipo_" + indice).innerHTML=variable.tipo;
+							document.getElementById("variable_descripcion_" + indice).innerHTML=variable.descripcion;
+							document.getElementById("variable_valor_" + indice).innerHTML=variable.valor;
+							document.getElementById("variable_unidades_" + indice).innerHTML=variable.unidades;
+							document.getElementById("variable_humbrales_" + indice).innerHTML='<form action="humbrales" target="_self"><input id="humbrales_' + indice + '" type="button" value="humbrales" onclick="pintaHumbrales(\'' + indice + '\')"></form>'
+							});
+						}
+					}
+				};
+				xhVariables.open("GET", "http://{{ IPDISPOSITIVO }}/configVariables", true);
+				xhVariables.send(null);					
+			};
+			
+			function pintaHumbrales(idVariable){
+				var indiceVariable=2;
+				console.log("Vamos...");
+				var xhVariables = new XMLHttpRequest();
+                xhVariables.onreadystatechange = function(){
+					if (xhVariables.readyState == 4){
+						if(xhVariables.status == 200) {
+							console.log("JSON: " + xhVariables.responseText);
+							var res = JSON.parse(xhVariables.responseText);
+
+							var variables=res.Variables;
+							console.log("numero variables: " + variables.length);
+
+							variables.forEach(function(variable,indice,array) {
+								console.log("indice: " + indice + " | buscando: " + idVariable)
+								if(indice==idVariable){
+									console.log("Variable encontrada. Entramos...");
+									
+									var humbrales=variable.Humbrales;
+									console.log(humbrales)
+									console.log("numero humbrales: " + humbrales.length);
+
+									humbrales.forEach(function(humbral,indice,array) {
+										var hilera = document.getElementById("humbral_"+indice);
+										if(hilera==null){
+											console.log("no existe la fila, la creo");
+											var hilera = document.createElement("tr");
+											hilera.setAttribute("id", "humbral_" + indice);
+											hilera.setAttribute("class","modo2");
+											document.getElementById("body_tabla_humbrales").appendChild(hilera);
+								
+											var celda = document.createElement("td");
+											celda.setAttribute("id","humbral_id_"+indice);
+											celda.setAttribute("align","right");
+											hilera.appendChild(celda);
+											celda.innerHTML=indice;
+
+											celda = document.createElement("td");
+											celda.setAttribute("id","humbral_nombre_"+indice);
+											celda.setAttribute("align","left");
+											hilera.appendChild(celda);
+
+											celda = document.createElement("td");
+											celda.setAttribute("id","humbral_tipo_"+indice);
+											celda.setAttribute("align","center");
+											hilera.appendChild(celda);
+
+											celda = document.createElement("td");
+											celda.setAttribute("id","humbral_valor_"+indice);
+											celda.setAttribute("align","right");
+											hilera.appendChild(celda);
+
+											celda = document.createElement("td");
+											celda.setAttribute("id","humbral_mensaje_"+indice);
+											celda.setAttribute("align","left");
+											hilera.appendChild(celda);
+										}
+
+										//document.getElementById("humbral_id_" + indice).innerHTML=humbral.id;
+										document.getElementById("humbral_nombre_" + indice).innerHTML=humbral.nombre;
+										document.getElementById("humbral_tipo_" + indice).innerHTML=humbral.tipo;
+										document.getElementById("humbral_valor_" + indice).innerHTML=humbral.valor;
+										document.getElementById("humbral_mensaje_" + indice).innerHTML=humbral.mensaje;
+									});
+								}//del if de los indices
+							});
+						}
+					}
+				};
+				xhVariables.open("GET", "http://{{ IPDISPOSITIVO }}/configVariables", true);
+				xhVariables.send(null);		
+				
+				muestraHumbrales();
+			};
+			
+			function ocultaHumbrales(){
+				document.getElementById('tabla_humbrales').style.display='none';
+				document.getElementById('boton_humbrales').style.display='none';
+			};
+			function muestraHumbrales(){
+				document.getElementById('tabla_humbrales').style.display='block';
+				document.getElementById('boton_humbrales').style.display='block';
+			};			
+		</script>
+	</HEAD>
+	<BODY onload="inicializa();">
+		<TABLE id="tabla_variables" border="0" width="100%" cellpadding="0" cellspacing="0" width="300" class="tabla">
+			<CAPTION>Variables</CAPTION>
+			<tbody  id="body_tabla_variables">
+				<TR>
+					<TH>id</TH>
+					<TH>Nombre</TH>
+					<TH>Tipo</TH>
+					<TH>Descripcion</TH>
+					<TH>Valor</TH>
+					<TH>Unidades</TH>
+					<TH>Humbrales</TH>
+				</TR>
+				<!-- Una linea por cada variable
+				<TR class="modo2">
+					<TD>3</TD><TD>Celula</TD><TD>1</TD><TD>INPUT</TD><TD>19</TD><TD>1</TD><TD>0</TD><TD>0</TD><TD>-</TD><TD>--</TD>
+				</TR>
+				-->
+			</tbody>
+		</table>
+		<br>
+	
+		<TABLE id="tabla_humbrales" border="0" width="100%" cellpadding="0" cellspacing="0" width="300" class="tabla">
+			<CAPTION>Humbrales</CAPTION>
+			<tbody  id="body_tabla_humbrales">
+				<TR>
+					<TH>id</TH>
+					<TH>Nombre</TH>
+					<TH>Tipo</TH>
+					<TH>Valor</TH>
+					<TH>Mensaje</TH>
+				</TR>
+				<!-- Una linea por cada humbral
+				<TR class="modo2">
+					<TD>3</TD><TD>Celula</TD><TD>1</TD><TD>INPUT</TD><TD>19</TD><TD>1</TD><TD>0</TD><TD>0</TD><TD>-</TD><TD>--</TD>
+				</TR>
+				-->
+			</tbody>
+		</table>		
+		<br>
+		<form id="form_humbrales" action="humbrales" target="_self"><input id="boton_humbrales" type="button" onClick="ocultaHumbrales()"  value="Ocultar"></form>
+	
+		<br>
+		<form id="form_sensores" action="sensores" target="_self"><input id="boton_sensores" type="button" onClick="document.getElementById('form_sensores').submit()"  value="Sensores"></form>
+	</BODY>
+</HTML>
