@@ -34,7 +34,7 @@
 
 								celda = document.createElement("td");
 								celda.setAttribute("id","sensor_nombre_"+indice);
-								celda.setAttribute("align","right");
+								celda.setAttribute("align","left");
 								hilera.appendChild(celda);
 
 								celda = document.createElement("td");
@@ -85,5 +85,7 @@
 				-->
 			</tbody>
 		</table>
+		<br>
+		<form id="form_variables" action="variables" target="_self"><input id="boton_variables" type="button" onClick="document.getElementById('form_variables').submit()"  value="Volver"></form>
 	</BODY>
 </HTML>
