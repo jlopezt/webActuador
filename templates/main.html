@@ -38,7 +38,7 @@
         xh.onreadystatechange = function(){
           if (xh.readyState == 4){
             if(xh.status == 200) {
-              console.log("JSON: " + JSON)
+              console.log("JSON: " + JSON.responseText)
               var res = JSON.parse(xh.responseText);
               //nombre familia
               if (typeof res.nombreFamilia !== 'undefined'){
@@ -63,6 +63,28 @@
         xh.open("GET", "http://{{ IPDISPOSITIVO }}/nombre", true);
         xh.send(null);        
         
+        var xhServicios = new XMLHttpRequest();
+        xhServicios.onreadystatechange = function() {
+          if (xhServicios.readyState == 4) {
+            if(xhServicios.status == 200) {
+              console.log("JSON: " + xhServicios.responseText)
+              var res = JSON.parse(xhServicios.responseText);
+
+              var servicios=res.Servicios;
+
+              servicios.forEach(function(servicio,indice) {
+                if (typeof servicio !== 'undefined'){
+                  console.log("servicio (" + indice + "): " + servicio);
+                  var menuItem="menu" + servicio;
+                  document.getElementById(menuItem).className="visible"
+                }
+              });
+            }
+          }
+        };
+        xhServicios.open("GET", "http://{{ IPDISPOSITIVO }}/servicios", true);
+        xhServicios.send(null);  
+
         //cargo el iframe con al info inicial
         cambiaIFrame("root",'iframe_a');
         cambiaIFrame("ficheros",'iframe_b');
@@ -115,13 +137,14 @@
       <div class="izquierda">
         <nav id="nav"  class="visible">
           <ul>
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('root','iframe_a')">Inicio</li>
-            <!--<li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('sensores','iframe_a')">Sensores</li>-->
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('variables','iframe_a')">Variables</li>            
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('entradas','iframe_a')">Entradas</li>
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('salidas','iframe_a')">Salidas</li>
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('secuenciador','iframe_a')">Secuenciador</li>
-            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('maquinaEstados','iframe_a')">Maq. estados</li>
+            <li id="menuRoot" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('root','iframe_a')">Inicio</li>
+            <!--<li id="menuSensores" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('sensores','iframe_a')">Sensores</li>-->
+            <li id="menuImagen" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('imagen','iframe_a')">Imagen</li>            
+            <li id="menuVariables" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('variables','iframe_a')">Variables</li>            
+            <li id="menuEntradas" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('entradas','iframe_a')">Entradas</li>
+            <li id="menuSalidas" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('salidas','iframe_a')">Salidas</li>
+            <li id="menuSecuenciador" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('secuenciador','iframe_a')">Secuenciador</li>
+            <li id="menuMaquinaEstados" class="oculto" onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('maquinaEstados','iframe_a')">Maq. estados</li>
           </ul>
         </nav>
       </div>

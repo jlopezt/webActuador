@@ -4,66 +4,95 @@ const ACTIVO    ="#FFFF00";
 const DESACTIVO ="#DDDDDD";
 
 function inicializa() {
-    var xhVariables = new XMLHttpRequest();
-    xhVariables.onreadystatechange = function(){
-        if (xhVariables.readyState == 4){
-            if(xhVariables.status == 200) {
-            console.log("JSON: " + xhVariables.responseText)
-            actualizaVariables(xhVariables.responseText);
-            }
-        }
-    };
-    xhVariables.open("GET","http://{{ IPDISPOSITIVO }}/estadoVariables", true);
-    xhVariables.send(null); 
-    
-    var xhEntradas = new XMLHttpRequest();
-    xhEntradas.onreadystatechange = function(){
-        if (xhEntradas.readyState == 4){
-            if(xhEntradas.status == 200) {
-            console.log("JSON: " + xhEntradas.responseText)
-            actualizaEntradas(xhEntradas.responseText);
-            }
-        }
-    };
-    xhEntradas.open("GET","http://{{ IPDISPOSITIVO }}/estadoEntradas", true);
-    xhEntradas.send(null); 
+    var xhServicios = new XMLHttpRequest();
+    xhServicios.onreadystatechange = function() {
+        if (xhServicios.readyState == 4) {
+        if(xhServicios.status == 200) {
+            console.log("JSON: " + xhServicios.responseText)
+            var res = JSON.parse(xhServicios.responseText);
 
-    var xhSalidas = new XMLHttpRequest();
-    xhSalidas.onreadystatechange = function(){
-        if (xhSalidas.readyState == 4){
-            if(xhSalidas.status == 200) {
-            console.log("JSON: " + xhSalidas.responseText)
-            actualizaSalidas(xhSalidas.responseText);
+            var servicios=res.Servicios;
+
+            servicios.forEach(function(servicio,indice) {
+                if (typeof servicio !== 'undefined'){
+                    switch(servicio){
+                        case "Entradas":
+                            var xhEntradas = new XMLHttpRequest();
+                            xhEntradas.onreadystatechange = function(){
+                                if (xhEntradas.readyState == 4){
+                                    if(xhEntradas.status == 200) {
+                                    console.log("JSON: " + xhEntradas.responseText)
+                                    actualizaEntradas(xhEntradas.responseText);
+                                    }
+                                }
+                            };
+                            xhEntradas.open("GET","http://{{ IPDISPOSITIVO }}/estadoEntradas", true);
+                            xhEntradas.send(null);                     
+                            break;
+                        case "Variables":
+                            var xhVariables = new XMLHttpRequest();
+                            xhVariables.onreadystatechange = function(){
+                                if (xhVariables.readyState == 4){
+                                    if(xhVariables.status == 200) {
+                                    console.log("JSON: " + xhVariables.responseText)
+                                    actualizaVariables(xhVariables.responseText);
+                                    }
+                                }
+                            };
+                            xhVariables.open("GET","http://{{ IPDISPOSITIVO }}/estadoVariables", true);
+                            xhVariables.send(null); 
+                            break;
+                        case "Salidas":
+                            var xhSalidas = new XMLHttpRequest();
+                            xhSalidas.onreadystatechange = function(){
+                                if (xhSalidas.readyState == 4){
+                                    if(xhSalidas.status == 200) {
+                                    console.log("JSON: " + xhSalidas.responseText)
+                                    actualizaSalidas(xhSalidas.responseText);
+                                    }
+                                }
+                            };
+                            xhSalidas.open("GET", "http://{{ IPDISPOSITIVO }}/estadoSalidas", true);
+                            xhSalidas.send(null);                     
+                            break;
+                        case "Secuenciador":
+                            var xhSecuenciador = new XMLHttpRequest();
+                            xhSecuenciador.onreadystatechange = function(){
+                                if (xhSecuenciador.readyState == 4){
+                                    if(xhSecuenciador.status == 200) {
+                                    console.log("JSON: " + xhSecuenciador.responseText)
+                                    actualizaSecuenciador(xhSecuenciador.responseText);
+                                    }
+                                }
+                            };
+                            xhSecuenciador.open("GET", "http://{{ IPDISPOSITIVO }}/estadoSecuenciador", true);
+                            xhSecuenciador.send(null); 
+                            break;
+                        case "MaquinaEstados":
+                            var xhME = new XMLHttpRequest();
+                            xhME.onreadystatechange = function(){
+                                if (xhME.readyState == 4){
+                                    if(xhME.status == 200) {
+                                    console.log("JSON: " + xhME.responseText)
+                                    actualizaMaquinaEstados(xhME.responseText);
+                                    }
+                                }
+                            };
+                            xhME.open("GET", "http://{{ IPDISPOSITIVO }}/estadoMaquinaEstados", true);
+                            xhME.send(null); 
+                            break;
+                        case "Imagen":
+                            break;
+                        }
+                    }
+                });
             }
         }
     };
-    xhSalidas.open("GET", "http://{{ IPDISPOSITIVO }}/estadoSalidas", true);
-    xhSalidas.send(null); 
+    xhServicios.open("GET", "http://{{ IPDISPOSITIVO }}/servicios", true);
+    xhServicios.send(null);  
 
-    var xhME = new XMLHttpRequest();
-    xhME.onreadystatechange = function(){
-        if (xhME.readyState == 4){
-            if(xhME.status == 200) {
-            console.log("JSON: " + xhME.responseText)
-            actualizaMaquinaEstados(xhME.responseText);
-            }
-        }
-    };
-    xhME.open("GET", "http://{{ IPDISPOSITIVO }}/estadoMaquinaEstados", true);
-    xhME.send(null); 
-
-    var xhSecuenciador = new XMLHttpRequest();
-    xhSecuenciador.onreadystatechange = function(){
-        if (xhSecuenciador.readyState == 4){
-            if(xhSecuenciador.status == 200) {
-            console.log("JSON: " + xhSecuenciador.responseText)
-            actualizaSecuenciador(xhSecuenciador.responseText);
-            }
-        }
-    };
-    xhSecuenciador.open("GET", "http://{{ IPDISPOSITIVO }}/estadoSecuenciador", true);
-    xhSecuenciador.send(null); 
-
+    //Conecta por MQTT con el dispositivo
     connect();
 }
 
