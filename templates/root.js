@@ -4,17 +4,17 @@ const ACTIVO    ="#FFFF00";
 const DESACTIVO ="#DDDDDD";
 
 function inicializa() {
-    var xhMedidas = new XMLHttpRequest();
-    xhMedidas.onreadystatechange = function(){
-        if (xhMedidas.readyState == 4){
-            if(xhMedidas.status == 200) {
-            console.log("JSON: " + xhMedidas.responseText)
-            actualizaMedidas(xhMedidas.responseText);
+    var xhVariables = new XMLHttpRequest();
+    xhVariables.onreadystatechange = function(){
+        if (xhVariables.readyState == 4){
+            if(xhVariables.status == 200) {
+            console.log("JSON: " + xhVariables.responseText)
+            actualizaVariables(xhVariables.responseText);
             }
         }
     };
-    xhMedidas.open("GET","http://{{ IPDISPOSITIVO }}/estadoMedidas", true);
-    xhMedidas.send(null); 
+    xhVariables.open("GET","http://{{ IPDISPOSITIVO }}/estadoVariables", true);
+    xhVariables.send(null); 
     
     var xhEntradas = new XMLHttpRequest();
     xhEntradas.onreadystatechange = function(){
@@ -67,57 +67,64 @@ function inicializa() {
     connect();
 }
 
-function actualizaMedidas(datos) {
+function actualizaVariables(datos) {
     var res = JSON.parse(datos);
 
-    //medidas
-    var medidas=res.Medidas;
-    console.log("numero medidas: " + medidas.length);
+    //variables
+    var variables=res.Variables;
+    console.log("numero variables: " + variables.length);
 
-    if(medidas.length==0) return;//Si no hay medidas salgo
-    var div=document.getElementById("div_medidas");
+    if(variables.length==0) return;//Si no hay variables salgo
+    var div=document.getElementById("div_variables");
     div.setAttribute("class","margen visible");
 
-    medidas.forEach(function(medida,indice,array) {
-        var hilera = document.getElementById("medida_"+indice);
+    variables.forEach(function(variable,indice,array) {
+        var hilera = document.getElementById("variable_"+indice);
         if(hilera==null){
             console.log("no existe la fila, la creo");
             var hilera = document.createElement("tr");
-            hilera.setAttribute("id", "medida_" + indice);
+            hilera.setAttribute("id", "variable_" + indice);
             hilera.setAttribute("class","modo2");
-            document.getElementById("body_tabla_medidas").appendChild(hilera);
+            document.getElementById("body_tabla_variables").appendChild(hilera);
 
             var celda = document.createElement("td");
-            celda.setAttribute("id","medida_id_"+indice);
+            celda.setAttribute("id","variable_id_"+indice);
             celda.setAttribute("align","right");
             hilera.appendChild(celda);
 
             celda = document.createElement("td");
-            celda.setAttribute("id","medida_nombre_"+indice);
+            celda.setAttribute("id","variable_nombre_"+indice);
             celda.setAttribute("align","right");
             hilera.appendChild(celda);
 
             celda = document.createElement("td");
-            celda.setAttribute("id","medida_valor_"+indice);
+            celda.setAttribute("id","variable_valor_"+indice);
+            celda.setAttribute("align","center");
+            hilera.appendChild(celda);
+
+            celda = document.createElement("td");
+            celda.setAttribute("id","variable_unidades_"+indice);
             celda.setAttribute("align","center");
             hilera.appendChild(celda);
         }
 
-        document.getElementById("medida_id_" + indice).innerHTML=indice;//medida.id;
-        document.getElementById("medida_nombre_" + indice).innerHTML=medida.nombre;
-        let cad="";
-        for (const x in medida) {
-            console.log('analizo x= ' + x + ' | valor: ' + medida[x]);
-            if(x!='nombre') cad += x + ' = ' + medida[x] + '<BR>';            
-        }
-        document.getElementById("medida_valor_" + indice).innerHTML=cad;
+        document.getElementById("variable_id_" + indice).innerHTML=indice;//variable.id;
+        document.getElementById("variable_nombre_" + indice).innerHTML=variable.nombre;
+        document.getElementById("variable_valor_" + indice).innerHTML=variable.valor;
+        document.getElementById("variable_unidades_" + indice).innerHTML=variable.unidades;
+        //let cad="";
+        //for (const x in variable) {
+        //    console.log('analizo x= ' + x + ' | valor: ' + variable[x]);
+        //    if(x!='nombre') cad += x + ' = ' + variable[x] + '<BR>';            
+        //}
+        //document.getElementById("variable_valor_" + indice).innerHTML=cad;
     });
 
     //Si hay filas de mas, las borro
-    var tabla = document.getElementById("tabla_medidas");
-    if(tabla.rows.length-1>medidas.length){ //si hay mas filas que habitaciones, le resto la cabecera
-        console.log("filas en tabla: " + (tabla.rows.length-1) + " | medidas: " + medidas.length);
-        for(i=tabla.rows.length;i>medidas.length+1;i--){
+    var tabla = document.getElementById("tabla_variables");
+    if(tabla.rows.length-1>variables.length){ //si hay mas filas que habitaciones, le resto la cabecera
+        console.log("filas en tabla: " + (tabla.rows.length-1) + " | variables: " + variables.length);
+        for(i=tabla.rows.length;i>variables.length+1;i--){
             console.log("borro la fila " + (i));
             tabla.deleteRow(i-1);
         }

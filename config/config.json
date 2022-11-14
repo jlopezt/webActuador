@@ -72,7 +72,9 @@
       "IP": "10.68.0.51",        
       "Paginas":[        
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
-        {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
+        {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
+        {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
+        {"nombre":"humbrales","pagina":"humbrales.html", "Parametros":[
           {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
           {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
           ]
