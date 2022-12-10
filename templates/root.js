@@ -248,6 +248,11 @@ function actualizaSalidas(datos) {
             hilera.appendChild(celda);
 
             celda = document.createElement("td");
+            celda.setAttribute("id","salida_modo_"+indice);
+            celda.setAttribute("align","center");
+            hilera.appendChild(celda);
+
+            celda = document.createElement("td");
             celda.setAttribute("id","salida_accion_"+indice);
             celda.setAttribute("align","center");
             hilera.appendChild(celda);
@@ -260,13 +265,17 @@ function actualizaSalidas(datos) {
         var estado=document.getElementById("salida_estado_" + indice);
         estado.innerHTML=salida.nombreEstado;
 
+        document.getElementById("salida_modo_" + indice).innerHTML=salida.modo;
+
         var accion=document.getElementById("salida_accion_" + indice);
-        if(salida.modo=="Manual"){
+
+        //accion.innerHTML="<p>Modo " + salida.modo + "</p>";
+        if(salida.modo=="Manual" || salida.modo=="Secuenciador"){
             if(salida.estado==0) {
                 estado.style.backgroundColor=DESACTIVO;
 
                 //accion.innerHTML  = "<form action='activaSalida'><input  type='hidden' id='activa_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='submit' value='activar'></form>";
-                accion.innerHTML  = "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='activar' onclick='actuaSalida(\"" + salida.id + "\",\"activaSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
+                accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='activar' onclick='actuaSalida(\"" + salida.id + "\",\"activaSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
                 //accion.innerHTML += "<form action='pulsoSalida'><input  type='hidden' id='pulso_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='submit' value='pulso'></form>";
                 accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='pulso' onclick='actuaSalida(\"" + salida.id + "\",\"pulsoSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
             }
@@ -274,11 +283,12 @@ function actualizaSalidas(datos) {
                 estado.style.backgroundColor=ACTIVO;
                 
                 //accion.innerHTML  = "<form action='desactivaSalida'><input  type='hidden' id='desactiva_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='submit' value='desactivar'></form>";
-                accion.innerHTML  = "<input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='button' value='desactivar' onclick='actuaSalida(\"" + salida.id + "\",\"desactivaSalida\")'>";
+                accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='button' value='desactivar' onclick='actuaSalida(\"" + salida.id + "\",\"desactivaSalida\")'>";
             }
         }
         else{
-            accion.innerHTML="<p>Modo " + salida.modo + "</p>";
+            //accion.innerHTML="<p>Modo " + salida.modo + "</p>";
+            accion.innerHTML=" -- ";
         }
     });
 

@@ -1,7 +1,7 @@
 {
   "Proceso":{
     "IP": "10.68.0.101",
-    "puerto" : 5002,
+    "puerto" : 5000,
     "outputFile" : "salida.log"
   },
   "Raiz":{
@@ -46,6 +46,57 @@
         {"nombre": "estadoSalidas", "servicio": "estadoSalidas", "Parametros": []},
         {"nombre": "configEntradas", "servicio": "configEntradas", "Parametros": []},
         {"nombre": "configSalidas", "servicio": "configSalidas", "Parametros": []},
+        {"nombre": "listaFicheros", "servicio": "listaFicheros", "Parametros": []},
+        {"nombre": "creaFichero", "servicio": "creaFichero", "Parametros": ["nombre", "contenido"]},
+        {"nombre": "borraFichero", "servicio": "borraFichero", "Parametros": ["nombre"]},
+        {"nombre": "leeFichero", "servicio": "leeFichero", "Parametros": ["nombre"]},
+        {"nombre": "particiones", "servicio": "particiones", "Parametros": []},
+        {"nombre": "setNextBoot", "servicio": "setNextBoot", "Parametros": ["p"]}
+      ]
+    },
+    {
+      "nombre":"Adornos",
+      "IP": "10.68.1.82",
+      "Paginas":[
+        {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
+        {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
+        {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
+        {"nombre":"humbrales","pagina":"humbrales.html", "Parametros":[]},
+        {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
+          {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
+          {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
+          ]
+        },
+        {"nombre":"salidas","pagina":"salidas.html", "Parametros":[]},
+        {"nombre":"secuenciador","pagina":"secuenciador.html", "Parametros":[]},
+        {"nombre":"secuenciador.js","pagina":"secuenciador.js", "Parametros":[]},
+        {"nombre":"root","pagina":"root.html", "Parametros":[]},
+        {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
+        {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},
+        {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
+        {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
+        {"nombre":"info", "pagina": "info.html", "Parametros":[]},
+        {"nombre":"maquinaEstados", "pagina": "maquinaEstados.html", "Parametros":[]}
+      ],
+      "Servicios":[
+        {"nombre": "nombre", "servicio": "nombre", "Parametros": []},
+        {"nombre": "restart", "servicio": "restart", "Parametros": []},
+        {"nombre": "info", "servicio": "info", "Parametros": []},
+        {"nombre": "estadoEntradas", "servicio": "estadoEntradas", "Parametros": []},
+        {"nombre": "xxxestadoSalidas", "servicio": "estadoSalidas", "Parametros": []},
+        {"nombre": "configEntradas", "servicio": "configEntradas", "Parametros": []},
+        {"nombre": "configSalidas", "servicio": "configSalidas", "Parametros": []},
+        {"nombre": "activaSalida", "servicio": "activaSalida", "Parametros": []},
+        {"nombre": "desactivaSalida", "servicio": "desactivaSalida", "Parametros": ["IdSalida"]},
+        {"nombre": "fuerzaSalidaManual", "servicio": "fuerzaSalidaManual", "Parametros": ["IdSalida"]},
+        {"nombre": "recuperaSalidaManual", "servicio": "recuperaSalidaManual", "Parametros": ["IdSalida"]},
+        {"nombre": "pulsoSalida", "servicio": "pulsoSalida", "Parametros": ["IdSalida"]},
+        {"nombre": "configSecuenciador", "servicio": "configSecuenciador", "Parametros": []},
+        {"nombre": "estadoSecuenciador", "servicio": "estadoSecuenciador", "Parametros": []},
+        {"nombre": "activaSecuenciador", "servicio": "activaSecuenciador", "Parametros": []},
+        {"nombre": "desactivaSecuenciador", "servicio": "desactivaSecuenciador", "Parametros": []},
+        {"nombre": "estadoMaquinaEstados", "servicio": "estadoMaquinaEstados", "Parametros": []},
         {"nombre": "listaFicheros", "servicio": "listaFicheros", "Parametros": []},
         {"nombre": "creaFichero", "servicio": "creaFichero", "Parametros": ["nombre", "contenido"]},
         {"nombre": "borraFichero", "servicio": "borraFichero", "Parametros": ["nombre"]},
