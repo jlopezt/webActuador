@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title>Domoticae</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/static/css.css" media="screen" />
+    <link rel='stylesheet' type='text/css' href='/static/main.css'>
+        <script type="text/javascript">
+            function inicializa(){
+                return
+            }
+
+            function cargaPadre(pagina){
+                window.parent.location.href=pagina;
+            };           
+        </script>
+	</head>
+	<body onload="inicializa()">
+		<table id="tabla_bloques" style="border: 2px solid black">
+			<tbody id="body_tabla_bloques">
+                {% for app in APPS: %}
+                <tr>
+                    <td onclick="cargaPadre('{{app["enlace"]}}')">
+                        <p>{{ app["descripcion"] }}</p>
+                        <img alt='{{ app["nombre"] }}' src='../static/{{ app["imagen"] }}' width="320px" height="240px">
+                    </td>
+                </tr>
+                {% endfor %}                
+    		</tbody>
+        </table>
+    </body>
+</html>
