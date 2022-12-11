@@ -5,22 +5,54 @@
     "outputFile" : "salida.log"
   },
   "Raiz":{
-    "nombre": "Home place",
-    "cabecera": "Domoticae",
-    "pie" : "actuadores",
-    "Bloques":[
-      {"nombre":"primero", "imagen": "img_camara.jpg","enlace": "termostatix/"},
-      {"nombre":"segundo", "imagen": "img_garaje.jpg","enlace": "navidad/"},
-      {"nombre":"tercero", "imagen": "img_LuzEscalera.jpg","enlace": "luzescalera/"},
-      {"nombre":"cuarto", "imagen": "img_navidad.jpg","enlace": "camara/index.html"},
-      {"nombre":"quinto", "imagen": "img_camara.jpg","enlace": "https://fotos.lopeztola.com/"},
-      {"nombre":"sexto", "imagen": "img_LuzEscalera.jpg","enlace": "https://eltiempo.lopeztola.com"},
-      {"nombre":"septimo", "imagen": "img_navidad.jpg","enlace": "https://www.marca.es"}      
-    ]
+    "nombre": "Domoticae",
+    "cabecera": "Home web",
+    "pie" : "Dispositivos de cliente"
   },
   "Apps":[
     {
       "nombre":"Camara",
+      "descripcion":"Camara de vigilancia",
+      "imagen": "img_camara.jpg",
+      "enlace": "/Camara",
+      "IP": "10.68.0.51",
+      "Paginas":[        
+        {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
+          {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
+          {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
+          ]
+        },
+        {"nombre":"salidas","pagina":"salidas.html", "Parametros":[]},
+        {"nombre":"root","pagina":"root.html", "Parametros":[]},
+        {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
+        {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},        
+        {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
+        {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
+        {"nombre":"info", "pagina": "info.html", "Parametros":[]}
+      ],
+      "Servicios":[
+        {"nombre":"imagen","servicio":"index.html", "Parametros":[]},
+        {"nombre": "nombre", "servicio": "nombre", "Parametros": []},
+        {"nombre": "restart", "servicio": "restart", "Parametros": []},
+        {"nombre": "info", "servicio": "info", "Parametros": []},
+        {"nombre": "estadoEntradas", "servicio": "estadoEntradas", "Parametros": []},
+        {"nombre": "estadoSalidas", "servicio": "estadoSalidas", "Parametros": []},
+        {"nombre": "configEntradas", "servicio": "configEntradas", "Parametros": []},
+        {"nombre": "configSalidas", "servicio": "configSalidas", "Parametros": []},
+        {"nombre": "listaFicheros", "servicio": "listaFicheros", "Parametros": []},
+        {"nombre": "creaFichero", "servicio": "creaFichero", "Parametros": ["nombre", "contenido"]},
+        {"nombre": "borraFichero", "servicio": "borraFichero", "Parametros": ["nombre"]},
+        {"nombre": "leeFichero", "servicio": "leeFichero", "Parametros": ["nombre"]},
+        {"nombre": "particiones", "servicio": "particiones", "Parametros": []},
+        {"nombre": "setNextBoot", "servicio": "setNextBoot", "Parametros": ["p"]}
+      ]
+    },
+    {
+      "nombre":"Calefaccion",
+      "descripcion":"Control del al calefaccion", 
+      "imagen": "img_calefaccion.jpg",
+      "enlace": "/termostatix/",
       "IP": "10.68.0.52",
       "Paginas":[        
         {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
@@ -56,7 +88,10 @@
     },
     {
       "nombre":"Adornos",
-      "IP": "10.68.1.82",
+      "descripcion":"Adornos navideños", 
+      "imagen": "img_navidad.jpg",
+      "enlace": "/navidad/",
+      "IP": "10.68.1.82",      
       "Paginas":[
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
@@ -107,7 +142,10 @@
     },
     {
       "nombre":"Riego",
-      "IP": "10.68.0.51",        
+      "descripcion":"Riego del jardin", 
+      "imagen": "img_riego.jpg",
+      "enlace": "/Riego",
+      "IP": "10.68.1.82",
       "Paginas":[        
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
@@ -158,6 +196,9 @@
     },    
     {
       "nombre": "Escalera",
+      "descripcion":"Luz de la escalera", 
+      "imagen": "img_LuzEscalera.jpg",
+      "enlace": "/luzescalera/",
       "IP": "10.68.1.80",
       "Paginas":[
         {"nombre":"Xroot","pagina":"root.html", "Parametros":[]},

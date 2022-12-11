@@ -28,7 +28,9 @@
 
       function inicializa(){
         //cargo el iframe con al info inicial
-        cambiaIFrame("static/panel.html");
+        //cambiaIFrame("static/panel.html");
+        cambiaIFrame("paneles");
+
         //Ajusto la altura del iframe
         var margen = window.getComputedStyle(document.body,null).getPropertyValue("margin-top");
         margen = margen.substr(0,margen.length-2);//le quito el px del final
@@ -67,11 +69,17 @@
       <div class="izquierda">
         <nav id="nav">
           <ul id="ul_menu">
+            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('/paneles')">Inicio</li>
+            {% for app in APPS: %}
+            <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('{{app["enlace"]}}')">{{app["nombre"]}}</li>
+            {% endfor %}            
+            <!--
             <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaIFrame('tabla.html')">Inicio</li>
             <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaPagina('termostatix/')">termostatix</li>
             <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaPagina('luzescalera/')">luz escalera</li>
             <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaPagina('navidad/')">navidad</li>
             <li onMouseOver="this.style.cursor='pointer'" onClick="cambiaPagina('camara/')">garaje</li>
+            -->
           </ul>
         </nav>
       </div>
@@ -85,17 +93,17 @@
 
       <article id="article">
         <div id="atras" class="oculto">          
-          <iframe id="iframe_b" name="iframe_b" style="height:100%;width:100%;border:none;"></iframe>
+          <iframe id="iframe_b" name="iframe_b" style="height:100%;width:100%;border:none;" src=""></iframe>
         </div>
         <div id="delante" class="visible">
-          <iframe id="iframe_a" name="iframe_a" style="height:100%;width:100%;border:none;"></iframe>
+          <iframe id="iframe_a" name="iframe_a" style="height:100%;width:100%;border:none;" src=""></iframe>
         </div>
       </article>
     </section>
 
     <footer id="footer">
       <div class="izquierda" id="version">{{ PIE }}</div>
-      <div class="derecha"><a href="https://domoticae.lopeztola.com" target="_self" style="text-decoration:none; color:white;">domoticae-2022</a></div>
+      <div class="derecha"><a href="https://www.domoticae.com" target="_self" style="text-decoration:none; color:white;">domoticae-2022</a></div>
     </footer>
   </body>
 </html>
