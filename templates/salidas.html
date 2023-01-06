@@ -13,7 +13,7 @@
 						console.log("JSON: " + xhSalidas.responseText)
 						var res = JSON.parse(xhSalidas.responseText);
 
-						var salidas=res.salidas;
+						var salidas=res.datos;//salidas;
 						console.log("numero salidas: " + salidas.length);
 
 						salidas.forEach(function(salida,indice,array) {

@@ -70,7 +70,7 @@
               console.log("JSON: " + xhServicios.responseText)
               var res = JSON.parse(xhServicios.responseText);
 
-              var servicios=res.Servicios;
+              var servicios=res.datos;//Servicios;
 
               servicios.forEach(function(servicio,indice) {
                 if (typeof servicio !== 'undefined'){

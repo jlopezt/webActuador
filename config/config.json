@@ -145,7 +145,7 @@
       "descripcion":"Riego del jardin", 
       "imagen": "img_riego.jpg",
       "enlace": "/Riego",
-      "IP": "10.68.1.82",
+      "IP": "10.68.0.51",
       "Paginas":[        
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},

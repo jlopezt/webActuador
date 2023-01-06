@@ -14,7 +14,7 @@
 						console.log("JSON: " + xhEntradas.responseText)
 						var res = JSON.parse(xhEntradas.responseText);
 
-						var entradas=res.entradas;
+						var entradas=res.datos;//entradas;
 						console.log("numero entradas: " + entradas.length);
 
 						entradas.forEach(function(entrada,indice,array) {

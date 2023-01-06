@@ -16,7 +16,7 @@
 						console.log("JSON: " + xhVariables.responseText)
 						var res = JSON.parse(xhVariables.responseText);
 
-						var variables=res.Variables;
+						var variables=res.datos;//Variables;
 						console.log("numero variables: " + variables.length);
 
 						variables.forEach(function(variable,indice,array) {

@@ -11,7 +11,7 @@ function inicializa() {
             console.log("JSON: " + xhServicios.responseText)
             var res = JSON.parse(xhServicios.responseText);
 
-            var servicios=res.Servicios;
+            var servicios=res.datos;//Servicios;
 
             servicios.forEach(function(servicio,indice) {
                 if (typeof servicio !== 'undefined'){
@@ -100,7 +100,7 @@ function actualizaVariables(datos) {
     var res = JSON.parse(datos);
 
     //variables
-    var variables=res.Variables;
+    var variables=res.datos;//Variables;
     console.log("numero variables: " + variables.length);
 
     if(variables.length==0) return;//Si no hay variables salgo
@@ -164,7 +164,7 @@ function actualizaEntradas(datos) {
     var res = JSON.parse(datos);
 
     //entradas
-    var entradas=res.entradas;
+    var entradas=res.datos;//entradas;
     console.log("numero entradas: " + entradas.length);
 
     if(entradas.length==0) return;//Si no hay medidas salgo
@@ -216,7 +216,7 @@ function actualizaSalidas(datos) {
     var res = JSON.parse(datos);
 
     //salidas
-    var salidas=res.salidas;
+    var salidas=res.datos;//salidas;
     console.log("numero salidas: " + salidas.length);
 
     if(salidas.length==0) return;//Si no hay medidas salgo
@@ -307,7 +307,7 @@ function actualizaSecuenciador(datos) {
     var res = JSON.parse(datos);
 
     //Secuenciador
-    var planes=res.planes;
+    var planes=res.datos;//planes;
     console.log("numero planes: " + planes.length);
 
     if(planes.length==0) return;//Si no hay medidas salgo
