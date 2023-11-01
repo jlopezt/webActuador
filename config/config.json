@@ -11,12 +11,12 @@
   },
   "Apps":[
     {
-      "nombre":"Camara",
-      "descripcion":"Camara de vigilancia",
-      "imagen": "img_camara.jpg",
-      "enlace": "/Camara",
+      "nombre":"Garaje",
+      "descripcion":"Puerta del garaje",
+      "imagen": "img_garaje.jpg",
+      "enlace": "/Garaje",
       "IP": "10.68.0.51",
-      "Paginas":[        
+      "Paginas":[
         {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
           {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
           {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
@@ -26,7 +26,7 @@
         {"nombre":"root","pagina":"root.html", "Parametros":[]},
         {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
         {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
-        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},        
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},
         {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
         {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
         {"nombre":"info", "pagina": "info.html", "Parametros":[]}

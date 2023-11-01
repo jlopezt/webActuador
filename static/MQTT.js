@@ -4,16 +4,30 @@
 //var client       = null;
 //var hostname       = "mqtt.lopeztola.com";
 //var port           = 443;
+/* Movido al fichero html que lo invoca par pder hacer renderizacion con Jinja
 var hostname       = "10.68.0.101";
 var port           = 9000;
 var basePath       = "mqtt";
 var clientId       = "web_id_" + parseInt(Math.random() * 100000, 10);
 var topic_ping     = "ping";
 var topic_status   = "casaPre/Riego/#";
+*/
+var hostname       = "";
+var port           = 0;
+var basePath       = "";
+var clientId       = "";
+var topic_ping     = "";
+var topic_status   = "";
 
-
-function connect(){
+function connect(_hostname, _port, _basePath, _clientId, _topic_ping, _topic_status){
+    _hostname= hostname
+    _port = port
+    _basePath = basePath
+    _clientId =  clientId
+    _topic_ping = topic_ping
+    _topic_status = topic_status    
     console.log("conectando:\nhostname: " + hostname + "\npuerto: " + port + "\nclientId: " + clientId + "\ntopics: " + topic_ping + " : " + topic_status);
+    
     //client = new Paho.MQTT.Client(hostname, Number(port), clientId);
     client = new Paho.MQTT.Client(hostname, Number(port), clientId);
     if(client==null) console.log("error al conectar");
@@ -60,8 +74,7 @@ function onMessageArrived(message) {
             return;
         }
     }
-    //document.getElementById("topic").value = message.destinationName;
-    //document.getElementById("texto").value = message.payloadString;    
+  
     actualizaDatos(message.destinationName,message.payloadString);
 }
 
