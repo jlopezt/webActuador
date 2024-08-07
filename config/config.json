@@ -11,6 +11,51 @@
   },
   "Apps":[
     {
+      "nombre":"Test1",
+      "descripcion":"Test para la plataforma",
+      "imagen": "img_garaje.jpg",
+      "enlace": "/Test1",
+      "IP": "10.68.0.55",
+      "Paginas":[
+        {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
+          {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
+          {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
+          ]
+        },
+        {"nombre":"salidas","pagina":"salidas.html", "Parametros":[]},
+        {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
+        {"nombre":"maquinaEstados","pagina":"maquinaEstados.html", "Parametros":[]},
+        {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
+        {"nombre":"root","pagina":"root.html", "Parametros":[]},
+        {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
+        {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},
+        {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
+        {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
+        {"nombre":"info", "pagina": "info.html", "Parametros":[]}
+      ],
+      "Servicios":[
+        {"nombre":"imagen","servicio":"index.html", "Parametros":[]},
+        {"nombre": "nombre", "servicio": "nombre", "Parametros": []},
+        {"nombre": "restart", "servicio": "restart", "Parametros": []},
+        {"nombre": "info", "servicio": "info", "Parametros": []},
+        {"nombre": "estadoEntradas", "servicio": "estadoEntradas", "Parametros": []},
+        {"nombre": "configEntradas", "servicio": "configEntradas", "Parametros": []},
+        {"nombre": "estadoSalidas", "servicio": "estadoSalidas", "Parametros": []},
+        {"nombre": "configSalidas", "servicio": "configSalidas", "Parametros": []},
+        {"nombre": "estadoVariables", "servicio": "estadoVariables", "Parametros": []},
+        {"nombre": "configVariables", "servicio": "configVariables", "Parametros": []},
+        {"nombre": "estadoSecuenciador", "servicio": "estadoSecuenciador", "Parametros": []},
+        {"nombre": "configSecuenciador", "servicio": "configSecuenciador", "Parametros": []},
+        {"nombre": "listaFicheros", "servicio": "listaFicheros", "Parametros": []},
+        {"nombre": "creaFichero", "servicio": "creaFichero", "Parametros": ["nombre", "contenido"]},
+        {"nombre": "borraFichero", "servicio": "borraFichero", "Parametros": ["nombre"]},
+        {"nombre": "leeFichero", "servicio": "leeFichero", "Parametros": ["nombre"]},
+        {"nombre": "particiones", "servicio": "particiones", "Parametros": []},
+        {"nombre": "setNextBoot", "servicio": "setNextBoot", "Parametros": ["p"]}
+      ]
+    },
+    {
       "nombre":"Garaje",
       "descripcion":"Puerta del garaje",
       "imagen": "img_garaje.jpg",

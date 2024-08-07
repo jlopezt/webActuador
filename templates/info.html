@@ -23,6 +23,16 @@
                         document.getElementById("fecha").innerHTML=basica.fecha;
                         document.getElementById("nivelActivo").innerHTML=basica.nivelActivo;
 
+                        //NVS
+                        var NVS=res.NVS;
+                        document.getElementById("DeviceId").innerHTML=NVS.DeviceID;
+                        document.getElementById("nombreServicio").innerHTML=NVS.nombreServicio;
+                        document.getElementById("nombremDNS").innerHTML=NVS.nombremDNS;
+                        document.getElementById("usuario").innerHTML=NVS.usuario;
+                        document.getElementById("password").innerHTML=NVS.password;
+                        document.getElementById("SSID").innerHTML=NVS.SSID;
+                        document.getElementById("passwordSSID").innerHTML=NVS.passwordSSID;
+
                         //WiFi
                         var wifi=res.wifi;
                         document.getElementById("ssid").innerHTML=wifi.ssid;
@@ -110,6 +120,40 @@
                     <tr class="modo2">
                         <TD style="text-align: left;">Nivel activo</TD>
                         <TD id="nivelActivo" style="text-align: right;"></TD>
+                    </tr>
+                </tbody>
+            </TABLE>
+            <br>
+            <TABLE id="tabla_NVS" style="border: 0px; border-color: #FFFFFF;width:100%;" cellpadding="0" cellspacing="0" class="tabla">
+                <caption id="caption_NVS">Info NVS</caption>
+                <tbody id="body_tabla_NVS">
+                    <tr class="modo2">
+                        <TD style="text-align: left;">DeviceID</TD>
+                        <TD id="DeviceId" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Nombre Servicio</TD>
+                        <TD id="nombreServicio" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Nombre mDNS</TD>
+                        <TD id="nombremDNS" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Usuario/TD>
+                        <TD id="usuario" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Password</TD>
+                        <TD id="password" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">SSID</TD>
+                        <TD id="SSID" style="text-align: right;"></TD>
+                    </tr>
+                    <tr class="modo2">
+                        <TD style="text-align: left;">Password SSID</TD>
+                        <TD id="passwordSSID" style="text-align: right;"></TD>
                     </tr>
                 </tbody>
             </TABLE>
