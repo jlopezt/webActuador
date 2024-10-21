@@ -26,7 +26,7 @@ def raiz():
         cabecera = raiz["cabecera"]
         pie = raiz["pie"]
         apps = configuracion["Apps"]
-        
+
         print('cabecera: ' + cabecera + ' longitud=' + str(len(cabecera)),sys.stderr)
         print('pie: ' + pie,sys.stderr)
 
@@ -69,7 +69,7 @@ def paneles():
         #Leo la configuracion
         apps =configuracion["Apps"]
         return render_template('paneles.html', NUM_APPS=len(apps), APPS=apps)
- 
+
 @app.route('/<dispositivo>/')
 def cacharro(dispositivo):
 #    try:
@@ -92,10 +92,10 @@ def cacharro(dispositivo):
 
             print('App no configurada',sys.stdout)
             return f'<p>App no configurada</p>'
-          
+
             return f'<p>Hello, World!<br>We are in {escape(dispositivo)}!!!!!</p><BR> se han configrado'
 #    except :
-#        print("No se pudo obtener el fichero de configuracion")            
+#        print("No se pudo obtener el fichero de configuracion")
 #        return f'Algo salio mal...'
 
 @app.route('/<dispositivo>/<recurso>')
@@ -145,5 +145,23 @@ def ficheros(dispositivo,recurso):
             print('App no configurada',sys.stdout)
             return f'<p>App no configurada</p>'
 #    except :
-#        print("No se pudo obtener el fichero de configuracion")            
+#        print("No se pudo obtener el fichero de configuracion")
 #        return f'Algo salio mal...'
+
+'''
+if __name__=="__main__":
+    print("Vamos a ello............................................")
+    try: #leo el fichero de configuracion
+        with open(configFile) as json_file:
+            configuracion = json.load(json_file)
+
+            #Leo la configuracion
+            Proceso=configuracion["Proceso"]
+            host=Proceso["IP"]
+            puerto = Proceso["puerto"]
+
+        print("Arrancamos con host:",host," y puerto: ",puerto)
+        app.run(host=host, port=puerto)
+    except :
+        print("No se pudo obtener el fichero de configuracion")
+'''

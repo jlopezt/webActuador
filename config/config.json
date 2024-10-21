@@ -1,6 +1,6 @@
 {
   "Proceso":{
-    "IP": "10.68.0.101",
+    "IP": "10.68.0.100",
     "puerto" : 5000,
     "outputFile" : "salida.log"
   },
@@ -15,7 +15,7 @@
       "descripcion":"Test para la plataforma",
       "imagen": "img_garaje.jpg",
       "enlace": "/Test1",
-      "IP": "10.68.0.55",
+      "IP": "10.68.0.51",
       "Paginas":[
         {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
           {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
@@ -60,7 +60,7 @@
       "descripcion":"Puerta del garaje",
       "imagen": "img_garaje.jpg",
       "enlace": "/Garaje",
-      "IP": "10.68.0.51",
+      "IP": "10.68.0.50",
       "Paginas":[
         {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
           {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
@@ -95,11 +95,11 @@
     },
     {
       "nombre":"Calefaccion",
-      "descripcion":"Control del al calefaccion", 
+      "descripcion":"Control del al calefaccion",
       "imagen": "img_calefaccion.jpg",
       "enlace": "/termostatix/",
       "IP": "10.68.0.52",
-      "Paginas":[        
+      "Paginas":[
         {"nombre":"entradas","pagina":"entradas.html", "Parametros":[
           {"nombre":"topic", "valor": "casaPre/PuertaGaraje/#"},
           {"nombre": "hostname","valor": "mqtt.lopeztola.com"}
@@ -109,7 +109,7 @@
         {"nombre":"root","pagina":"root.html", "Parametros":[]},
         {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
         {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
-        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},        
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},
         {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
         {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
         {"nombre":"info", "pagina": "info.html", "Parametros":[]}
@@ -133,10 +133,10 @@
     },
     {
       "nombre":"Adornos",
-      "descripcion":"Adornos navideños", 
+      "descripcion":"Adornos navideños",
       "imagen": "img_navidad.jpg",
       "enlace": "/navidad/",
-      "IP": "10.68.1.82",      
+      "IP": "10.68.1.82",
       "Paginas":[
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
@@ -187,11 +187,11 @@
     },
     {
       "nombre":"Riego",
-      "descripcion":"Riego del jardin", 
+      "descripcion":"Riego del jardin",
       "imagen": "img_riego.jpg",
       "enlace": "/Riego",
       "IP": "10.68.0.51",
-      "Paginas":[        
+      "Paginas":[
         {"nombre":"sensores","pagina":"sensores.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
         {"nombre":"variables","pagina":"variables.html", "Parametros":[]},
@@ -203,11 +203,11 @@
         },
         {"nombre":"salidas","pagina":"salidas.html", "Parametros":[]},
         {"nombre":"secuenciador","pagina":"secuenciador.html", "Parametros":[]},
-        {"nombre":"secuenciador.js","pagina":"secuenciador.js", "Parametros":[]},        
+        {"nombre":"secuenciador.js","pagina":"secuenciador.js", "Parametros":[]},
         {"nombre":"root","pagina":"root.html", "Parametros":[]},
         {"nombre":"restart", "pagina": "restart.html", "Parametros":[]},
         {"nombre":"root.js", "pagina": "root.js", "Parametros":[]},
-        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]},        
+        {"nombre":"ficheros", "pagina": "ficheros.html", "Parametros":[]}, 
         {"nombre":"editaFichero", "pagina": "editaFichero.html", "Parametros":[]},
         {"nombre":"particiones", "pagina": "particiones.html", "Parametros":[]},
         {"nombre":"info", "pagina": "info.html", "Parametros":[]},
@@ -238,10 +238,10 @@
         {"nombre": "particiones", "servicio": "particiones", "Parametros": []},
         {"nombre": "setNextBoot", "servicio": "setNextBoot", "Parametros": ["p"]}
       ]
-    },    
+    },
     {
       "nombre": "Escalera",
-      "descripcion":"Luz de la escalera", 
+      "descripcion":"Luz de la escalera",
       "imagen": "img_LuzEscalera.jpg",
       "enlace": "/luzescalera/",
       "IP": "10.68.1.80",
@@ -251,6 +251,6 @@
         {"nombre":"Xsalidas","pagina":"salidas.html", "Parametros":[]},
         {"nombre":"Xsecuenciador","pagina":"secuenciador.html", "Parametros":[]}
       ]
-    }    
+    }
   ]
 }

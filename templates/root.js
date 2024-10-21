@@ -3,6 +3,13 @@ const TEXTO     ="#000000";
 const ACTIVO    ="#FFFF00";
 const DESACTIVO ="#DDDDDD";
 
+var hostname       = "";//document.getElementById("broker").innerHTML; //"10.68.0.101"; //
+var port           = 9000;
+var basePath       = "mqtt";
+var clientId       = "web_id_" + parseInt(Math.random() * 100000, 10);
+var topic_ping     = "ping";
+var topic_status   = ""; //document.getElementById("topicCompleto").innerHTML + "/#"; //"casaPre/jlopezt/Test1/#"; //
+
 function inicializa() {
     var xhServicios = new XMLHttpRequest();
     xhServicios.onreadystatechange = function() {
@@ -90,10 +97,33 @@ function inicializa() {
         }
     };
     xhServicios.open("GET", "http://{{ IPDISPOSITIVO }}/servicios", true);
-    xhServicios.send(null);  
+    xhServicios.send(null); 
 
     //Conecta por MQTT con el dispositivo
-    connect();
+    var xhMQTT = new XMLHttpRequest();
+    xhMQTT.onreadystatechange = function(){
+        if (xhMQTT.readyState == 4){
+        if(xhMQTT.status == 200) {
+            console.log("JSON: " + xhMQTT.responseText)
+            var res = JSON.parse(xhMQTT.responseText);
+            //Broker
+            if (typeof res.broker !== 'undefined'){
+            console.log("broker: "+res.broker);
+            hostname = res.broker;
+            }
+            //Topic completo
+            if (typeof res.topicCompleto !== 'undefined'){
+            console.log("Topic completo: "+res.topicCompleto);
+            topic_status = res.topicCompleto + "/#";
+            }    
+        }
+        }
+    };
+    xhMQTT.open("GET", "http://{{ IPDISPOSITIVO }}/MQTT", false);  //Peticion sincrona
+    xhMQTT.send(null);        
+    
+    console.log("Conectando a MQTT con hostname " + hostname);
+    conecta(hostname,port,basePath,clientId,topic_ping,topic_status);
 }
 
 function actualizaVariables(datos) {
@@ -261,7 +291,6 @@ function actualizaSalidas(datos) {
         document.getElementById("salida_id_" + indice).innerHTML=salida.id;
         document.getElementById("salida_nombre_" + indice).innerHTML=salida.nombre;
         
-        //document.getElementById("salida_estado_" + indice).innerHTML=salida.nombreEstado;
         var estado=document.getElementById("salida_estado_" + indice);
         estado.innerHTML=salida.nombreEstado;
 
@@ -269,25 +298,22 @@ function actualizaSalidas(datos) {
 
         var accion=document.getElementById("salida_accion_" + indice);
 
-        //accion.innerHTML="<p>Modo " + salida.modo + "</p>";
         if(salida.modo=="Manual" || salida.modo=="Secuenciador"){
             if(salida.estado==0) {
                 estado.style.backgroundColor=DESACTIVO;
 
-                //accion.innerHTML  = "<form action='activaSalida'><input  type='hidden' id='activa_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='submit' value='activar'></form>";
-                accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='activar' onclick='actuaSalida(\"" + salida.id + "\",\"activaSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
-                //accion.innerHTML += "<form action='pulsoSalida'><input  type='hidden' id='pulso_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='submit' value='pulso'></form>";
+                accion.innerHTML  = "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='activar' onclick='actuaSalida(\"" + salida.id + "\",\"activaSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
                 accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #FFFF00; width: 80px' type='button' value='pulso' onclick='actuaSalida(\"" + salida.id + "\",\"pulsoSalida\")' onMouseOver='this.style.cursor=\"pointer\"'>";
             }
             else {
                 estado.style.backgroundColor=ACTIVO;
                 
-                //accion.innerHTML  = "<form action='desactivaSalida'><input  type='hidden' id='desactiva_" + indice + "' name='id' value='" + indice + "'><input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='submit' value='desactivar'></form>";
-                accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='button' value='desactivar' onclick='actuaSalida(\"" + salida.id + "\",\"desactivaSalida\")'>";
+                //************************************************ */
+                //accion.innerHTML  += "<input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='button' value='desactivar' onclick='actuaSalida(\"" + salida.id + "\",\"desactivaSalida\")'>";
+                accion.innerHTML  = "<input STYLE='color: #000000; text-align: center; background-color: #DDDDDD; width: 80px' type='button' value='desactivar' onclick='actuaSalida(\"" + salida.id + "\",\"desactivaSalida\")'>";
             }
         }
         else{
-            //accion.innerHTML="<p>Modo " + salida.modo + "</p>";
             accion.innerHTML=" -- ";
         }
     });
@@ -362,14 +388,21 @@ function actualizaSecuenciador(datos) {
 }
 
 function actualizaMaquinaEstados(datos) {
-
-    if(datos=="{}") return;//Si no hay medidas salgo
-    var div=document.getElementById("div_maquinaEstados");
-    div.setAttribute("class","margen visible");
+    ////if(datos=="{}") return;//Si no hay medidas salgo
+    ////var res = JSON.parse(datos);
 
     var res = JSON.parse(datos);
 
-    //salidas
+    //entradas y salidas
+    var entradas=res.numeroEntradas;
+    var salidas=res.numeroSalidas;
+    console.log("numero entradas: " + entradas + " y salidas: " + salidas);
+    if(entradas + salidas==0) return;//Si no hay medidas salgo
+
+    var div=document.getElementById("div_maquinaEstados");
+    div.setAttribute("class","margen visible");
+
+    //estado
     var estado=res.estado;
     console.log("estado: " + estado);
     document.getElementById("estadoME").innerHTML=estado;
